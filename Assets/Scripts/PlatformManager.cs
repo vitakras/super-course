@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 
-[RequireComponent (typeof (Player))]
 public class PlatformManager : MonoBehaviour {
 
 	public Player playerScript;   // the scipt Player

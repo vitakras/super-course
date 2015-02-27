@@ -59,7 +59,9 @@ public class KinectGestures
 		LeanLeft,
 		LeanRight,
 		KickLeft,
-		KickRight
+		KickRight,
+		LeftKneeUp,
+		RightKneeUp
 	}
 	
 	
@@ -101,6 +103,10 @@ public class KinectGestures
 	private static int leftAnkleIndex;
 	private static int rightAnkleIndex;
 
+	//Custom Gesture related constants, variables and function
+	private static int leftKneeIndex;
+	private static int rightKneeIndex;
+
 
 	// Returns the list of the needed gesture joint indexes
 	public static int[] GetNeededJointIndexes(KinectManager manager)
@@ -122,10 +128,15 @@ public class KinectGestures
 
 		leftAnkleIndex = manager.GetJointIndex(KinectInterop.JointType.AnkleLeft);
 		rightAnkleIndex = manager.GetJointIndex(KinectInterop.JointType.AnkleRight);
+
+		leftKneeIndex = manager.GetJointIndex(KinectInterop.JointType.KneeLeft);
+		rightKneeIndex = manager.GetJointIndex(KinectInterop.JointType.KneeRight);
+
 		
 		int[] neededJointIndexes = {
 			leftHandIndex, rightHandIndex, leftElbowIndex, rightElbowIndex, leftShoulderIndex, rightShoulderIndex,
-			hipCenterIndex, shoulderCenterIndex, leftHipIndex, rightHipIndex, leftAnkleIndex, rightAnkleIndex
+			hipCenterIndex, shoulderCenterIndex, leftHipIndex, rightHipIndex, leftAnkleIndex, rightAnkleIndex,
+			leftKneeIndex, rightKneeIndex
 		};
 
 		return neededJointIndexes;
@@ -1313,6 +1324,79 @@ public class KinectGestures
 				
 
 			// here come more gesture-cases
+		case Gestures.RightKneeUp: 
+			switch(gestureData.state) 
+			{
+			case 0:  // gesture detection - phase 1
+				if(jointsTracked[rightKneeIndex] && jointsTracked[leftKneeIndex] &&
+				   jointsTracked[rightAnkleIndex] && jointsTracked[leftAnkleIndex] &&
+				   ((jointsPos[rightKneeIndex].z - jointsPos[leftKneeIndex].z) < 0f) &&
+				   ((jointsPos[rightAnkleIndex].z - jointsPos[leftAnkleIndex].z) < 0f))
+				{
+					SetGestureJoint(ref gestureData, timestamp, rightAnkleIndex, jointsPos[rightKneeIndex]);
+					gestureData.progress = 0.5f;
+				}
+				break;
+				
+			case 1:  // gesture phase 2 = complete
+				if((timestamp - gestureData.timestamp) < 1.5f)
+				{
+					bool isInPose = jointsTracked[rightKneeIndex] && jointsTracked[leftKneeIndex] &&
+						jointsTracked[rightAnkleIndex] && jointsTracked[leftAnkleIndex] &&
+						((jointsPos[rightKneeIndex].z - jointsPos[leftKneeIndex].z) < -0.15f) &&
+						((jointsPos[rightAnkleIndex].z - jointsPos[leftAnkleIndex].z) < 0f);
+					
+					if(isInPose)
+					{
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+					}
+				}
+				else
+				{
+					// cancel the gesture
+					SetGestureCancelled(ref gestureData);
+				}
+				break;
+			}
+			break;
+
+		case Gestures.LeftKneeUp: 
+			switch(gestureData.state) 
+			{
+			case 0:  // gesture detection - phase 1
+				if(jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] &&
+				   jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
+				   ((jointsPos[leftKneeIndex].z - jointsPos[rightKneeIndex].z) < 0f) &&
+					((jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z) < 0f))
+				{
+					SetGestureJoint(ref gestureData, timestamp, rightAnkleIndex, jointsPos[rightKneeIndex]);
+					gestureData.progress = 0.5f;
+				}
+				break;
+				
+			case 1:  // gesture phase 2 = complete
+				if((timestamp - gestureData.timestamp) < 1.5f)
+				{
+					bool isInPose = jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] &&
+						jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
+						((jointsPos[leftKneeIndex].z - jointsPos[rightKneeIndex].z) < -0.15f) &&
+						((jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z) < -0.1f);
+					
+					if(isInPose)
+					{
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+					}
+				}
+				else
+				{
+					// cancel the gesture
+					SetGestureCancelled(ref gestureData);
+				}
+				break;
+			}
+			break;
 		}
 	}
 
