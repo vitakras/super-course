@@ -100,7 +100,7 @@ public class PointCloudView : MonoBehaviour
             return;
 
 		// get color texture
-		gameObject.renderer.material.mainTexture = manager.GetUsersClrTex();
+		gameObject.GetComponent<Renderer>().material.mainTexture = manager.GetUsersClrTex();
 
 		// update the mesh
 		UpdateMesh();

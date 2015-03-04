@@ -624,7 +624,7 @@ public class InteractionManager : MonoBehaviour
 				}
 			}
 
-			debugText.guiText.text = sGuiText;
+			debugText.GetComponent<GUIText>().text = sGuiText;
 		}
 		
 		// display the cursor status and position

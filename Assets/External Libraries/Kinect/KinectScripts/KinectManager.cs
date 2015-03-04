@@ -1092,7 +1092,7 @@ public class KinectManager : MonoBehaviour
 			
 			if(calibrationText != null)
 			{
-				calibrationText.guiText.text = ex.Message;
+				calibrationText.GetComponent<GUIText>().text = ex.Message;
 			}
 		}
 
@@ -1139,7 +1139,7 @@ public class KinectManager : MonoBehaviour
 			
 			if(calibrationText != null)
 			{
-				calibrationText.guiText.text = message;
+				calibrationText.GetComponent<GUIText>().text = message;
 			}
 			
 			return;
@@ -1153,7 +1153,7 @@ public class KinectManager : MonoBehaviour
 			
 			if(calibrationText != null)
 			{
-				calibrationText.guiText.text = message;
+				calibrationText.GetComponent<GUIText>().text = message;
 			}
 			
 			return;
@@ -1262,7 +1262,7 @@ public class KinectManager : MonoBehaviour
 		// GUI Text.
 		if(calibrationText != null)
 		{
-			calibrationText.guiText.text = "WAITING FOR USERS";
+			calibrationText.GetComponent<GUIText>().text = "WAITING FOR USERS";
 		}
 		
 		Debug.Log("Waiting for users.");
@@ -1672,12 +1672,12 @@ public class KinectManager : MonoBehaviour
 		List<Int64> lostUsers = new List<Int64>();
 		lostUsers.AddRange(alUserIds);
 
-		if(hintHeightAngle && calibrationText != null && calibrationText.guiText.text == string.Empty)
+		if(hintHeightAngle && calibrationText != null && calibrationText.GetComponent<GUIText>().text == string.Empty)
 		{
 			float angle = sensorData.sensorRotDetected.eulerAngles.x;
 			angle = angle > 180f ? (angle - 360f) : angle;
 
-			calibrationText.guiText.text = string.Format("Sensor Height: {0:F1} m, Angle: {1:F0} deg", sensorData.sensorHgtDetected, angle);
+			calibrationText.GetComponent<GUIText>().text = string.Format("Sensor Height: {0:F1} m, Angle: {1:F0} deg", sensorData.sensorHgtDetected, angle);
 		}
 		
 		for(int i = 0; i < sensorData.bodyCount; i++)
@@ -1985,9 +1985,9 @@ public class KinectManager : MonoBehaviour
 					
 					if(liPrimaryUserId != 0)
 					{
-						if(calibrationText != null && calibrationText.guiText.text != "")
+						if(calibrationText != null && calibrationText.GetComponent<GUIText>().text != "")
 						{
-							calibrationText.guiText.text = "";
+							calibrationText.GetComponent<GUIText>().text = "";
 						}
 					}
 				}
@@ -2097,7 +2097,7 @@ public class KinectManager : MonoBehaviour
 			
 			if(calibrationText != null)
 			{
-				calibrationText.guiText.text = "WAITING FOR USERS";
+				calibrationText.GetComponent<GUIText>().text = "WAITING FOR USERS";
 			}
 		}
 	}
@@ -2410,7 +2410,7 @@ public class KinectManager : MonoBehaviour
 					                                playerJointsTracked[joint] ? playerJointsPos[joint].ToString() : "");
 				}
 
-				gesturesDebugText.guiText.text = sDebugGestures;
+				gesturesDebugText.GetComponent<GUIText>().text = sDebugGestures;
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		
 		if(GestureInfo != null)
 		{
-			GestureInfo.guiText.text = "SwipeLeft, SwipeRight, Jump or Squat.";
+			GestureInfo.GetComponent<GUIText>().text = "SwipeLeft, SwipeRight, Jump or Squat.";
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		
 		if(GestureInfo != null)
 		{
-			GestureInfo.guiText.text = string.Empty;
+			GestureInfo.GetComponent<GUIText>().text = string.Empty;
 		}
 	}
 
@@ -63,7 +63,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 
 			if(GestureInfo != null)
 			{
-				GestureInfo.guiText.text = sGestureText;
+				GestureInfo.GetComponent<GUIText>().text = sGestureText;
 			}
 
 			//Debug.Log(sGestureText);
@@ -75,7 +75,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 
 			if(GestureInfo != null)
 			{
-				GestureInfo.guiText.text = sGestureText;
+				GestureInfo.GetComponent<GUIText>().text = sGestureText;
 			}
 
 			//Debug.Log(sGestureText);
@@ -95,7 +95,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 
 		if(GestureInfo != null)
 		{
-			GestureInfo.guiText.text = sGestureText;
+			GestureInfo.GetComponent<GUIText>().text = sGestureText;
 		}
 		
 		progressDisplayed = false;
@@ -116,7 +116,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 			// clear the progress info
 			if(GestureInfo != null)
 			{
-				GestureInfo.guiText.text = String.Empty;
+				GestureInfo.GetComponent<GUIText>().text = String.Empty;
 			}
 			
 			progressDisplayed = false;
