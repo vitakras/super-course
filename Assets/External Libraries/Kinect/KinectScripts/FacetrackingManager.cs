@@ -335,7 +335,7 @@ public class FacetrackingManager : MonoBehaviour
 
 			if(debugText != null)
 			{
-				debugText.guiText.text = "Please, wait...";
+				debugText.GetComponent<GUIText>().text = "Please, wait...";
 			}
 			
 			// ensure the needed dlls are in place and face tracking is available for this interface
@@ -367,20 +367,20 @@ public class FacetrackingManager : MonoBehaviour
 
 			if(debugText != null)
 			{
-				debugText.guiText.text = "Ready.";
+				debugText.GetComponent<GUIText>().text = "Ready.";
 			}
 		} 
 		catch(DllNotFoundException ex)
 		{
 			Debug.LogError(ex.ToString());
 			if(debugText != null)
-				debugText.guiText.text = "Please check the Kinect and FT-Library installations.";
+				debugText.GetComponent<GUIText>().text = "Please check the Kinect and FT-Library installations.";
 		}
 		catch (Exception ex) 
 		{
 			Debug.LogError(ex.ToString());
 			if(debugText != null)
-				debugText.guiText.text = ex.Message;
+				debugText.GetComponent<GUIText>().text = ex.Message;
 		}
 	}
 
@@ -468,11 +468,11 @@ public class FacetrackingManager : MonoBehaviour
 			{
 				if(isTrackingFace)
 				{
-					debugText.guiText.text = "Tracking - skeletonID: " + primaryUserID;
+					debugText.GetComponent<GUIText>().text = "Tracking - skeletonID: " + primaryUserID;
 				}
 				else
 				{
-					debugText.guiText.text = "Not tracking...";
+					debugText.GetComponent<GUIText>().text = "Not tracking...";
 				}
 			}
 		}
