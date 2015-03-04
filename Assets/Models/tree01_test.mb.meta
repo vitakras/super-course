@@ -1,40 +1,26 @@
 fileFormatVersion: 2
-guid: 83e572e9884f74851a7a7937aa144904
+guid: 1cd03c09aef6c478da60a65cd5cce127
+timeCreated: 1425486743
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: group
-    100002: group1
-    100004: pasted__pCylinder2
-    100006: pasted__pCylinder2 1
-    100008: pCylinder1
-    100010: pCylinder2
-    100012: polySurface1
-    100014: polySurface2
-    100016: polySurface3
-    100018: transform1
-    100020: transform2
-    100022: transform3
-    100024: transform4
-    100026: transform5
-    100028: transform6
-    100030: //RootNode
-    400000: group
-    400002: group1
-    400004: pasted__pCylinder2
-    400006: pasted__pCylinder2 1
-    400008: pCylinder1
-    400010: pCylinder2
-    400012: polySurface1
-    400014: polySurface2
-    400016: polySurface3
-    400018: transform1
-    400020: transform2
-    400022: transform3
-    400024: transform4
-    400026: transform5
-    400028: transform6
-    400030: //RootNode
+    100000: polySurface1
+    100002: polySurface2
+    100004: polySurface3
+    100006: transform1
+    100008: transform2
+    100010: transform3
+    100012: tree01:Mesh
+    100014: //RootNode
+    400000: polySurface1
+    400002: polySurface2
+    400004: polySurface3
+    400006: transform1
+    400008: transform2
+    400010: transform3
+    400012: tree01:Mesh
+    400014: //RootNode
     2300000: polySurface3
     3300000: polySurface3
     4300000: polySurface3
@@ -59,7 +45,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 7
+    globalScale: 8
     meshCompression: 0
     addColliders: 1
     importBlendShapes: 1
@@ -73,7 +59,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
