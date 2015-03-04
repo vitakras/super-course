@@ -1,0 +1,21 @@
+<grammar version="1.0" xml:lang="en-US" root="rootRule" tag-format="semantics/1.0-literals" xmlns="http://www.w3.org/2001/06/grammar">
+  <rule id="rootRule">
+    <one-of>
+      <item>
+        <tag>PAUSE</tag>
+        <one-of>
+          <item> pause </item>
+          <item> stop </item>
+          <item> break </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>RESUME</tag>
+        <one-of>
+          <item> resume </item>
+          <item> play </item>
+        </one-of>
+      </item>
+    </one-of>
+  </rule>
+</grammar>

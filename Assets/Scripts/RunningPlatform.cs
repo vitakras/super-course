@@ -11,6 +11,9 @@ public class RunningPlatform : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		player.KinectMove (Vector3.forward);
+		//player.KinectMove (Vector3.forward);
+		if(GameStateManager.gameState == GameStateManager.State.PLAYING){
+			player.Move(Vector3.forward);
+		}
 	}
 }

@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 
 	public float speed = 5.0f;
 	public GUIText DebugInfo; // GUI Text to display the gesture messages.
+	public GameStateManager gameState;
 	
 	private float distanceTraveled;
 
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	}
 	
 	public void UserDetected(long userId, int userIndex) {
+
 		// the gestures are allowed for the primary user only
 		if (!this.manager || (userId != manager.GetPrimaryUserID ())) {
 			return;
@@ -76,6 +78,10 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	{
 		if (!manager || (userId != manager.GetPrimaryUserID ())) {
 			return;
+		}
+
+		if(GameStateManager.gameState == GameStateManager.State.PLAYING) {
+			this.gameState.PauseGame();
 		}
 	}
 	
