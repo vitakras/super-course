@@ -19,6 +19,7 @@ public class MarkerPath : MonoBehaviour {
 		}
 
 		Vector3 heading = markers[index].transform.position - playerPosition;
+		//heading.y = 0;
 
 		if ((((int)heading.x) == 0) && (((int)heading.z) == 0)) {
 			index++;

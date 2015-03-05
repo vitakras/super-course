@@ -27,6 +27,7 @@ function Update () {
 		directionVector = directionVector * directionLength;
 	}
 	
+	Debug.Log(directionLength);
 	// Apply the direction to the CharacterMotor
 	motor.inputMoveDirection = transform.rotation * directionVector;
 	motor.inputJump = Input.GetButton("Jump");
