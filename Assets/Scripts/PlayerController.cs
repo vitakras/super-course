@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInterface {
 
 	public float speed = 5.0f;
-	public GUIText DebugInfo; // GUI Text to display the gesture messages.
+	public Text DebugInfo; // GUI Text to display the gesture messages.
 	public GameStateManager gameState;
 	
 	private float distanceTraveled;
+	private CharacterMotor motor;
 
 	private KinectManager manager;
 	private float gesture_progress = -1;
@@ -20,12 +22,17 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	private float startTime; //time gesture started;
 	private float gestureTime; //time gestrue took;
 
+	private bool test;
+
 	// Use this for initialization
 	void Start () {
+		this.DebugInfo.text = "worsk";
 		this.gestureTime = 0.0f;
 		this.distanceTraveled = 0.0f;
 		this.ResetGestureProgress ();
-		
+
+		motor = GetComponent <CharacterMotor> ();
+
 		if (this.manager == null) {
 			this.manager = KinectManager.Instance;
 		}
@@ -34,6 +41,9 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	// Update is called once per frame
 	void Update () {
 		this.distanceTraveled = transform.localPosition.z;
+		this.motor.inputJump = test;
+
+		Debug.Log("Input jump" + motor.IsJumping ());
 	}
 	
 	public void Move(Vector3 direction) {
@@ -67,10 +77,11 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		}
 		
 		// detect these user specific gestures
+		this.manager.DetectGesture (userId, KinectGestures.Gestures.Jump);
 		this.manager.DetectGesture (userId, KinectGestures.Gestures.Walk);
-		this.manager.DeleteGesture (userId, KinectGestures.Gestures.Jump);
 
-		this.DebugInfo.text = "uSer visible";
+
+		this.DebugInfo.text = "User visible";
 		
 	}
 	
@@ -93,12 +104,20 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 			return;
 		}
 
+		Debug.Log(""  + gesture + " " + test);
+
 		if ((gesture == KinectGestures.Gestures.Walk) && // check when gesture walk started;
 		    (progress == 0.2f) && (gesture_progress != progress)) {
 			this.startTime = Time.time;
 		} else if ((gesture == KinectGestures.Gestures.Walk) && 
 		    (progress == 0.5f) && (gesture_progress != progress)) {
 			this.num_steps++;
+		}  else if ((gesture == KinectGestures.Gestures.Jump) &&
+		    (progress == 0.5f) && (gesture_progress != progress)) {
+			if (motor.IsGrounded ()) {
+				motor.SetVelocity(motor.jumping.jumpDir * motor.CalculateJumpVerticalSpeed (motor.jumping.baseHeight + motor.jumping.extraHeight));
+			}
+				this.test = true;
 		} 
 		
 		this.gesture_progress = progress;
@@ -113,13 +132,15 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		}
 
 		this.gestureTime = Time.time - this.startTime;
-		this.DebugInfo.text = "Gesture time" + this.gestureTime;
+		this.DebugInfo.text = "" + gesture;
 
 
 		switch (gesture) {
 		case KinectGestures.Gestures.Jump:
 			this.num_jumps++;
 			this.user_jumped = true;
+			this.test = false;
+			Debug.Log("Jumped" + num_jumps);
 			break;
 		case KinectGestures.Gestures.Walk:
 			this.num_steps++;

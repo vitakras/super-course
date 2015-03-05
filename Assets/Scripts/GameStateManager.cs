@@ -12,6 +12,7 @@ public class GameStateManager : MonoBehaviour {
 	}
 
 	public static State gameState;
+	public GameObject player;
 	public Text stateInfo;
 
 	private byte countDown;
@@ -76,13 +77,13 @@ public class GameStateManager : MonoBehaviour {
 	public void ResumeGame() {
 		this.ResetCountDown ();
 		this.state = State.RESUME;
-
 		StartCoroutine("ResumeCountDown");
 	}
 
 	public void PauseGame() {
 		this.state = State.PAUSED;
 		stateInfo.text = "Paused";
+		DisablePlayerScripts();
 		setGameState();
 	}
 
@@ -96,6 +97,7 @@ public class GameStateManager : MonoBehaviour {
 
 		this.ResetCountDown ();
 		this.state = State.PLAYING;
+		EnablePlayerScripts();
 		setGameState();
 	}
 
@@ -107,4 +109,20 @@ public class GameStateManager : MonoBehaviour {
 	private void setGameState() {
 		GameStateManager.gameState = this.state;
 	}
+
+	private void DisablePlayerScripts() {
+		MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+		foreach(MonoBehaviour script in scripts)
+		{
+			script.enabled = false;
+		}
+	}
+	private void EnablePlayerScripts() {
+		MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+		foreach(MonoBehaviour script in scripts)
+		{
+			script.enabled = true;
+		}
+	}
+
 }

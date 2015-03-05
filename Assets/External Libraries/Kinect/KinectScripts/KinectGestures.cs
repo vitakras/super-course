@@ -1012,39 +1012,39 @@ public class KinectGestures
 				break;
 			
 			// check for Jump
-			case Gestures.Jump:
-				switch(gestureData.state)
+		case Gestures.Jump:
+			switch(gestureData.state)
+			{
+			case 0:  // gesture detection - phase 1
+				if(jointsTracked[hipCenterIndex] && 
+				   (jointsPos[hipCenterIndex].y > 0.6f) && (jointsPos[hipCenterIndex].y < 1.2f))
 				{
-					case 0:  // gesture detection - phase 1
-						if(jointsTracked[hipCenterIndex] && 
-							(jointsPos[hipCenterIndex].y > 0.6f) && (jointsPos[hipCenterIndex].y < 1.2f))
-						{
-							SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
-							gestureData.progress = 0.5f;
-						}
-						break;
-				
-					case 1:  // gesture phase 2 = complete
-						if((timestamp - gestureData.timestamp) < 1.5f)
-						{
-							bool isInPose = jointsTracked[hipCenterIndex] &&
-								(jointsPos[hipCenterIndex].y - gestureData.jointPos.y) > 0.15f && 
-								Mathf.Abs(jointsPos[hipCenterIndex].x - gestureData.jointPos.x) < 0.2f;
-
-							if(isInPose)
-							{
-								Vector3 jointPos = jointsPos[gestureData.joint];
-								CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
-							}
-						}
-						else
-						{
-							// cancel the gesture
-							SetGestureCancelled(ref gestureData);
-						}
-						break;
+					SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
+					gestureData.progress = 0.5f;
 				}
 				break;
+				
+			case 1:  // gesture phase 2 = complete
+				if((timestamp - gestureData.timestamp) < 1.5f)
+				{
+					bool isInPose = jointsTracked[hipCenterIndex] &&
+						(jointsPos[hipCenterIndex].y - gestureData.jointPos.y) > 0.15f && 
+							Mathf.Abs(jointsPos[hipCenterIndex].x - gestureData.jointPos.x) < 0.2f;
+					
+					if(isInPose)
+					{
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+					}
+				}
+				else
+				{
+					// cancel the gesture
+					SetGestureCancelled(ref gestureData);
+				}
+				break;
+			}
+			break;
 
 			// check for Squat
 			case Gestures.Squat:
