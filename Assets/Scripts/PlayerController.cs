@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInterface {
 
 	public float speed = 5.0f;
+	public bool kinectControl = false;
 	public Text DebugInfo; // GUI Text to display the gesture messages.
 	public GameStateManager gameState;
 	
@@ -26,7 +27,6 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 
 	// Use this for initialization
 	void Start () {
-		this.DebugInfo.text = "worsk";
 		this.gestureTime = 0.0f;
 		this.distanceTraveled = 0.0f;
 		this.ResetGestureProgress ();
@@ -43,7 +43,31 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		this.distanceTraveled = transform.localPosition.z;
 		this.motor.inputJump = test;
 
-		Debug.Log("Input jump" + motor.IsJumping ());
+		if (this.kinectControl) {
+
+		} else {
+			Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+			
+			if (directionVector != Vector3.zero) {
+				float directionLength = directionVector.magnitude;
+				directionVector = directionVector / directionLength;
+
+				directionLength = Mathf.Min(1, directionLength);
+
+				directionLength = directionLength * directionLength;
+
+				directionVector = directionVector * directionLength;
+			}
+			// Apply the direction to the CharacterMotor
+			motor.inputMoveDirection = transform.rotation * directionVector;
+			if (Input.GetButton("Jump")) {
+				Jump();
+			}
+
+			if (Input.GetKey("q")) {
+				motor.movement.maxForwardSpeed = 10;
+			}
+		}
 	}
 	
 	public void Move(Vector3 direction) {
@@ -140,7 +164,6 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 			this.num_jumps++;
 			this.user_jumped = true;
 			this.test = false;
-			Debug.Log("Jumped" + num_jumps);
 			break;
 		case KinectGestures.Gestures.Walk:
 			this.num_steps++;
@@ -169,5 +192,11 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	
 	private void ResetGestureProgress() {
 		this.gesture_progress = -1;
+	}
+
+	private void Jump() {
+		if (motor.IsGrounded ()) {
+			motor.SetVelocity(motor.jumping.jumpDir * motor.CalculateJumpVerticalSpeed (motor.jumping.baseHeight + motor.jumping.extraHeight));
+		}
 	}
 }
