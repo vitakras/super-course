@@ -39,6 +39,13 @@ public class GameStateManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKey("p")) {
+			if(state == State.PLAYING) {
+				PauseGame();
+			} else {
+				ResumeGame();
+			}
+		}
 	}
 
 	void FixedUpdate ()
