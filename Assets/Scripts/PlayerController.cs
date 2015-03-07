@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	public bool kinectControl = false;
 	public Text DebugInfo; // GUI Text to display the gesture messages.
 	public GameStateManager gameState;
+	public MarkerPath path;
 	
 	private float distanceTraveled;
 	private CharacterMotor motor;
@@ -44,7 +45,18 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		this.motor.inputJump = test;
 
 		if (this.kinectControl) {
+			Vector3 direction = (path.NextMarkerDirection(transform.position));
 
+			//if (path.NextMarker()) {
+				//Rotate In the Direction
+				Vector3 nextPositin = path.NextPosition();
+			nextPositin.y = gameObject.transform.position.y;
+				this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
+				                            Quaternion.LookRotation(nextPositin - gameObject.transform.position), 5*Time.deltaTime);
+			//}
+
+			// Walk In the direction of markers
+			motor.inputMoveDirection = direction;
 		} else {
 			Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			
@@ -84,6 +96,14 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		return this.distanceTraveled;
 	}
 
+	public uint GetSteps() {
+		return this.num_steps;
+	}
+
+	public uint GetJumps() {
+		return this.num_jumps;
+	}
+
 	public bool UserJumped() {
 		if (this.user_jumped) {
 			this.user_jumped = false;
@@ -91,6 +111,16 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		}
 		
 		return false;
+	}
+
+	void OnTriggerEnter(Collider other) {
+		Debug.Log ("Entered");
+		Debug.Log (other.tag);
+
+		if(other.tag.Equals("RoadBlock")) {
+			//Debug.Log ("Entered");
+			Jump();
+		}
 	}
 	
 	public void UserDetected(long userId, int userIndex) {
