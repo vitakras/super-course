@@ -32,6 +32,7 @@ public class GameStateManager : MonoBehaviour {
 		this.ResetCountDown();
 		switch (state) {
 		case State.RESUME:
+			DisablePlayerScripts();
 			StartCoroutine("ResumeCountDown");
 			break;
 		}

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 
 	private KinectManager manager;
 	private float gesture_progress = -1;
+	private KinectGestures.Gestures gesture = KinectGestures.Gestures.None;
 	
 	private uint num_steps;
 	private uint num_jumps;
@@ -34,6 +35,9 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 
 		motor = GetComponent <CharacterMotor> ();
 
+		motor.movement.maxForwardSpeed = 0.0f;
+
+
 		if (this.manager == null) {
 			this.manager = KinectManager.Instance;
 		}
@@ -41,12 +45,20 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 	
 	// Update is called once per frame
 	void Update () {
+		//motor.movement.maxForwardSpeed = this.speed;
 		this.distanceTraveled = transform.localPosition.z;
 		this.motor.inputJump = test;
 
 		if (this.kinectControl) {
 			Vector3 direction = (path.NextMarkerDirection(transform.position));
+			//float speed = (this.gestureTime == 0.0f) ? 0 : this.speed / this.gestureTime;
 
+			//Debug.Log("speed: " + speed);
+			if(gesture == KinectGestures.Gestures.Walk) {
+				//motor.movement.maxForwardSpeed = this.speed;
+			} else {
+				//motor.movement.maxForwardSpeed = 0f;
+			}
 			//if (path.NextMarker()) {
 				//Rotate In the Direction
 				Vector3 nextPositin = path.NextPosition();
@@ -157,20 +169,24 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		if (!this.manager || (userId != this.manager.GetPrimaryUserID ())) {
 			return;
 		}
+		
+		this.gesture = gesture;
 
 		Debug.Log(""  + gesture + " " + test);
 
 		if ((gesture == KinectGestures.Gestures.Walk) && // check when gesture walk started;
 		    (progress == 0.2f) && (gesture_progress != progress)) {
+			motor.movement.maxForwardSpeed = this.speed;
+			this.DebugInfo.text = "" + gesture;
 			this.startTime = Time.time;
 		} else if ((gesture == KinectGestures.Gestures.Walk) && 
 		    (progress == 0.5f) && (gesture_progress != progress)) {
 			this.num_steps++;
 		}  else if ((gesture == KinectGestures.Gestures.Jump) &&
 		    (progress == 0.5f) && (gesture_progress != progress)) {
-			if (motor.IsGrounded ()) {
-				motor.SetVelocity(motor.jumping.jumpDir * motor.CalculateJumpVerticalSpeed (motor.jumping.baseHeight + motor.jumping.extraHeight));
-			}
+			motor.movement.maxForwardSpeed = 5f;
+			this.DebugInfo.text = "" + gesture;
+			Jump();
 				this.test = true;
 		} 
 		
@@ -186,7 +202,7 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 		}
 
 		this.gestureTime = Time.time - this.startTime;
-		this.DebugInfo.text = "" + gesture;
+		this.DebugInfo.text = "" + gesture + " " + this.gestureTime;
 
 
 		switch (gesture) {
@@ -212,7 +228,8 @@ public class PlayerController : MonoBehaviour, KinectGestures.GestureListenerInt
 			return false;
 		}
 
-		//this.gestureTime = 0;
+		this.gestureTime = 0;
+		this.gesture = KinectGestures.Gestures.None;
 
 		ResetGestureProgress ();
 		return true;
