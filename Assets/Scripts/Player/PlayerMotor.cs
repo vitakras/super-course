@@ -30,18 +30,26 @@ public class PlayerMotor : MonoBehaviour {
 
 	/***********************************COLLISION HANDLERS **************************************/
 	void OnCollisionEnter(Collision collision) {
+		RaycastHit hit;
 		// Checks if Player Collided with the floor
-		if(collision.gameObject.transform.position.y < this.transform.position.y) {
+		if(collision.gameObject.tag == "Terrain") {
 			this.isGrounded = true;
-			this.ground_ID = collision.gameObject.GetInstanceID();
-		}
+		} else if (Physics.Raycast(transform.position, -Vector3.up, out hit)) {
+			if (hit.transform.GetInstanceID() == collision.transform.GetInstanceID()) {
+			this.isGrounded = true;
+			this.ground_ID = collision.transform.GetInstanceID();
+			}
+		} 
 	}
 	
 	void OnCollisionExit(Collision collision) {
 		//Checks if Player is no Longer Colliding with the floor
-		if (this.ground_ID == collision.gameObject.GetInstanceID()) {
+		if(collision.gameObject.tag == "Terrain") {
 			this.isGrounded = false;
-		}
+		} else if (this.ground_ID == collision.transform.GetInstanceID()) {
+			this.ground_ID = -1;
+			this.isGrounded = false;
+		} 
 	}
 
 	/***************************************PUBLIC FUNCTIONC ***************************************/
@@ -49,6 +57,7 @@ public class PlayerMotor : MonoBehaviour {
 	// Makes the Player Jump
 	public void Jump() {
 		if (this.isGrounded) {
+			this.isGrounded = false;
 			Vector3 jumpForce = (Vector3.up) * this.jumpForce;
 			jumpForce.z = this.jumpForce / 4;
 			this.rigidbody.AddForce(jumpForce);

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LoadScoreScene : MonoBehaviour {
 
-	public PlayerController player;
+	public PlayerKinectController player;
 
 	static public uint Steps;
 	static public uint Jumps;

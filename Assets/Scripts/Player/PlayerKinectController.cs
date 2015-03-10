@@ -7,6 +7,8 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 
 	public float move_speed =  10f; // Speed the player moves at
 	public Text DebugInfo; // GUI Text to display the gesture messages.
+	public bool debug;
+	public bool playerCanMove = true;
 
 	// Handles game State
 	public GameStateManager gameState;
@@ -24,7 +26,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 
 	// Other Private Functions
 	private PlayerMotor motor = new PlayerMotor();
-	private float speed;
+	public float speed;
 
 	// Use this for initialization
 	void Start () {
@@ -44,18 +46,37 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 			this.speed = this.move_speed;
 		}
 
-		if (last_complete_gesture == KinectGestures.Gestures.Walk) {
-			Debug.Log("Walking");
-			float speed = (this.gestureTime == 0.0f) ? 0 : this.speed / this.gestureTime; // Speed of the Player
-			Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
-			direction.y = 0f;
+		if (this.playerCanMove) {
+			if (!this.debug) {
+				if (last_complete_gesture == KinectGestures.Gestures.Walk) {
+					Debug.Log("Walking");
+					float speed = (this.gestureTime == 0.0f) ? 0 : this.speed / this.gestureTime; // Speed of the Player
+					Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
+					direction.y = 0f;
 
-			// Moves the Player 
-			this.motor.velocity = direction * speed;
-		} 
+
+					this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
+					                                                Quaternion.LookRotation(direction), 5*Time.deltaTime);
+					// Moves the Player 
+					this.motor.velocity = direction * speed;
+				} 
+			} else {
+				Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
+				direction.y = 0f;
+
+				this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
+				                                                      Quaternion.LookRotation(direction), 5*Time.deltaTime);
+
+				// Moves the Player 
+				this.motor.velocity = direction * this.speed;
+			} 
+		} else {
+			this.motor.velocity = Vector3.zero;
+		}
 
 		if (Input.GetButton("Jump")) {
 			this.motor.Jump();
+			this.isPlayerJump = true;
 		}
 	}
 	/****************************************PUBLIC FUNCTIONCS ********************************************/
@@ -68,7 +89,19 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 
 		return false;
 	}
-	
+
+	public void StopPlayer() {
+		this.playerCanMove = false;
+		this.motor.velocity = Vector3.zero;
+	}
+
+	public uint GetSteps() {
+		return this.num_steps;
+	}
+
+	public uint GetJumps() {
+		return this.num_jumps;
+	}
 
 	/****************************************KINECT INTERFACE FUNCTIONS **********************************/
 	public void UserDetected(long userId, int userIndex) {
