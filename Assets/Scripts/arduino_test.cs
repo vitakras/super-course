@@ -66,13 +66,13 @@ public class arduino_test : MonoBehaviour {
 		if (Number == 1)
 		{
 			BlueLight.GetComponent<Light>().intensity = 0;
-			RedLight.GetComponent<Light>().intensity = 1.5f;
+			RedLight.GetComponent<Light>().intensity = 8f;
 			StartCoroutine(waitforred());
 		}
 		if (Number == 2)
 		{
 			RedLight.GetComponent<Light>().intensity = 0;
-			BlueLight.GetComponent<Light>().intensity = 1.5f;
+			BlueLight.GetComponent<Light>().intensity = 8f;
 			StartCoroutine(waitforblue());
 		}
 	}
