@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PlatformManager : MonoBehaviour {
 
-	public PlayerController playerScript;   // the scipt Player
+	//public PlayerController playerScript;   // the scipt Player
 	public float positionOffset;  			// Positions offset of the next Terrain
 	public float recycleOffset;   			// Positions when to move the Current Terrain player is on
 	public Vector3 startPosition; 			// Initial Position of the Terrain
@@ -28,9 +28,9 @@ public class PlatformManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (this.platformQueue.Peek ().localPosition.z + this.recycleOffset < this.playerScript.GetDistanceTraveled()) {
-			this.Recycle();
-		}
+		//if (this.platformQueue.Peek ().localPosition.z + this.recycleOffset < this.playerScript.GetDistanceTraveled()) {
+		//	this.Recycle();
+		//}
 	}
 
 	// Reuses platforms that the player walked Passed

@@ -37,6 +37,9 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 		if (this.manager == null) {
 			this.manager = KinectManager.Instance;
 		}
+
+		GameStateManager.Instance.PauseGame();
+		GameStateManager.Instance.ResumeGame();
 	}
 	
 	// Update is called once per frame
@@ -68,7 +71,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 				                                                      Quaternion.LookRotation(direction), 5*Time.deltaTime);
 
 				// Moves the Player 
-				this.motor.velocity = direction * this.speed;
+				this.motor.velocity = Vector3.forward * this.speed;//direction * this.speed;
 			} 
 		} else {
 			this.motor.velocity = Vector3.zero;
@@ -127,7 +130,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 		}
 
 		//Pauses the game If the Player is not Infront of Camera
-		if(GameStateManager.gameState == GameStateManager.State.PLAYING) {
+		if(GameStateManager.Instance.GameState() == GameStateManager.State.PLAYING) {
 			this.gameState.PauseGame();
 		}
 	}

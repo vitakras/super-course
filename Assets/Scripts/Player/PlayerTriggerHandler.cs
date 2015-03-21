@@ -35,23 +35,13 @@ public class PlayerTriggerHandler : MonoBehaviour {
 			
 
 	}
-
-	void OnTriggerEnter(Collider other) {
-		if(other.tag.Equals("RoadBlock")) {
-			this.isPlayerJumped = false;
-			//this.sound.Play();
-			this.controller.StopPlayer();
-		}
-	}
+	
 
 	void OnCollisionEnter (Collision collision) {
 		// Checks if Player Collided with the floor
 		if(collision.gameObject.transform.position.y < this.transform.position.y) {
 			if(collision.gameObject.tag.Equals("RoadBlock")) {
-				this.isPlayerJumped = false;
-				this.sound.Play();
-				this.controller.StopPlayer();
-				Destroy(collision.collider);
+				this.isPlayerJumped = false;;
 			}
 		}
 	}
