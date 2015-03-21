@@ -42,6 +42,7 @@ public class PlayerTriggerHandler : MonoBehaviour {
 		if(collision.gameObject.transform.position.y < this.transform.position.y) {
 			if(collision.gameObject.tag.Equals("RoadBlock")) {
 				this.isPlayerJumped = false;;
+				//Destroy(collision.collider);
 			}
 		}
 	}
