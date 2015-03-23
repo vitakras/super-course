@@ -8,7 +8,7 @@ public class HRTrigger : MonoBehaviour {
 	public int threshold = 105;
 	public int targetBeat = 100;
 	
-	private int heartRate = 0;
+	public int heartRate = 0;
 	private bool isFirst;
 	public GameObject prefab;
 	Vector3 playerPos;
