@@ -32,9 +32,10 @@ public class health_bar_manager : MonoBehaviour {
 		HandleHealth ();
 	
 	}
+
 	private void HandleHealth()
 	{
-		healthText.text = "Heart Rate: " + currentHealth;
+		healthText.text = currentHealth.ToString();
 
 		float currentXValue = MapValues (currentHealth, 0, maxHealth, minXValue, maxXValue);
 
