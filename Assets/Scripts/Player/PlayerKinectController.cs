@@ -7,6 +7,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 
 	public float move_speed =  10f; // Speed the player moves at
 	public Text DebugInfo; // GUI Text to display the gesture messages.
+
 	public bool debug;
 	public bool playerCanMove = true;
 
@@ -46,8 +47,11 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 	void Update () {
 		// Pauses the Player from using Game
 		if (GameStateManager.Instance.GameState() != GameStateManager.State.PLAYING) {
+			this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 			this.motor.velocity = Vector3.zero;
 			return;
+		} else if (GameStateManager.Instance.GameState() == GameStateManager.State.PLAYING) {
+			this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
 		}
 
 		//Debug.Log("Jumps" + num_jumps);
