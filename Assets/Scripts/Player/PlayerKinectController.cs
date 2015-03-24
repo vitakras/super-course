@@ -46,6 +46,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 	void Update () {
 		// Pauses the Player from using Game
 		if (GameStateManager.Instance.GameState() != GameStateManager.State.PLAYING) {
+			this.motor.velocity = Vector3.zero;
 			return;
 		}
 
@@ -136,7 +137,9 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 
 		//Pauses the game If the Player is not Infront of Camera
 		if(GameStateManager.Instance.GameState() == GameStateManager.State.PLAYING) {
-			this.gameState.PauseGame();
+			PauseMenuHandler.Instance.Pause();
+
+			//this.gameState.PauseGame();
 		}
 	}
 	
