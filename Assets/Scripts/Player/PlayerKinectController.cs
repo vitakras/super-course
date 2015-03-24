@@ -52,23 +52,23 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 		if (this.playerCanMove) {
 			if (!this.debug) {
 				if (last_complete_gesture == KinectGestures.Gestures.Walk) {
-					Debug.Log("Walking");
+					//Debug.Log("Walking");
 					float speed = (this.gestureTime == 0.0f) ? 0 : this.speed / this.gestureTime; // Speed of the Player
-					Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
-					direction.y = 0f;
+				//	Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
+				//	direction.y = 0f;
 
 
-					this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
-					                                                Quaternion.LookRotation(direction), 5*Time.deltaTime);
+					//this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
+					                                            //    Quaternion.LookRotation(direction), 5*Time.deltaTime);
 					// Moves the Player 
-					this.motor.velocity = direction * speed;
+					this.motor.velocity = Vector3.forward * speed;
 				} 
 			} else {
-				Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
-				direction.y = 0f;
+//				Vector3 direction = (path.NextMarkerDirection(transform.position)); // Direction of the Player
+				//direction.y = 0f;
 
-				this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
-				                                                      Quaternion.LookRotation(direction), 5*Time.deltaTime);
+				//this.gameObject.transform.rotation = Quaternion.Slerp(this.gameObject.transform.rotation,
+				                                        //              Quaternion.LookRotation(direction), 5*Time.deltaTime);
 
 				// Moves the Player 
 				this.motor.velocity = Vector3.forward * this.speed;//direction * this.speed;

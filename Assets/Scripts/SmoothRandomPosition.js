@@ -7,12 +7,15 @@ var range = Vector3 (1.0, 1.0, 1.0);
 
 private var noise = new Perlin();
 private var position : Vector3;
+//private var local : Vector3; 
 
 function Start()
 {
-	position = transform.position;
+	position = transform.localPosition;
+	//local = transform.local.position;
 }
 
 function Update () {
-	transform.position = position + Vector3.Scale(SmoothRandom.GetVector3(speed), range);
+	transform.localPosition = position + Vector3.Scale(SmoothRandom.GetVector3(speed), range);
+	//transform.position.z += transform.parent.position.z;
 }
