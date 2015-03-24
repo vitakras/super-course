@@ -3,14 +3,13 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent (typeof (PlayerMotor))]
-[RequireComponent(typeof(AudioSource))]
 public class PlayerTriggerHandler : MonoBehaviour {
 
 	// Other Private Functions
 	private PlayerMotor motor;
 	private PlayerKinectController controller;
-	private AudioSource sound;
 	private Rigidbody rigidbody;
+	private KinectManager kinect;
 
 	private bool isPlayerJumped = true;
 
@@ -18,8 +17,8 @@ public class PlayerTriggerHandler : MonoBehaviour {
 	void Start () {
 		this.motor = GetComponent<PlayerMotor>();
 		this.controller = GetComponent<PlayerKinectController>();
-		this.sound = GetComponent<AudioSource>();
 		this.rigidbody = GetComponent<Rigidbody>();
+		this.kinect = KinectManager.Instance;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +29,7 @@ public class PlayerTriggerHandler : MonoBehaviour {
 		} else if (!this.isPlayerJumped) {
 			if(controller.PlayerJumped()) {
 				this.isPlayerJumped = true;
+				kinect.DeleteGesture(kinect.GetPrimaryUserID(), KinectGestures.Gestures.Jump);
 			}
 		}
 			
@@ -41,7 +41,8 @@ public class PlayerTriggerHandler : MonoBehaviour {
 		// Checks if Player Collided with the floor
 		if(collision.gameObject.transform.position.y < this.transform.position.y) {
 			if(collision.gameObject.tag.Equals("RoadBlock")) {
-				this.isPlayerJumped = false;;
+				this.isPlayerJumped = false;
+				kinect.DetectGesture (kinect.GetPrimaryUserID(), KinectGestures.Gestures.Jump);
 				//Destroy(collision.collider);
 			}
 		}

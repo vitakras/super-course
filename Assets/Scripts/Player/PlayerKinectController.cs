@@ -44,6 +44,11 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 	
 	// Update is called once per frame
 	void Update () {
+		// Pauses the Player from using Game
+		if (GameStateManager.Instance.GameState() != GameStateManager.State.PLAYING) {
+			return;
+		}
+
 		//Debug.Log("Jumps" + num_jumps);
 		if(motor.IsGrounded()) {
 			this.speed = this.move_speed;
@@ -114,7 +119,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 		}
 		
 		// detect these user specific gestures
-		this.manager.DetectGesture (userId, KinectGestures.Gestures.Jump);
+		//this.manager.DetectGesture (userId, KinectGestures.Gestures.Jump);
 		this.manager.DetectGesture (userId, KinectGestures.Gestures.Walk);
 		
 		if (this.DebugInfo) {
