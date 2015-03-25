@@ -8,6 +8,7 @@ public class RoadBlockCreator : MonoBehaviour {
 	public float distance;           // Distance between blocks
 	public uint num_of_road_blocks;  // Max number of blocks to place
 	public GameObject road_block;    // Game object to place
+	public bool hitCollider = false;
 
 	private static RoadBlockCreator _instance;
 
@@ -30,9 +31,19 @@ public class RoadBlockCreator : MonoBehaviour {
 		this.num_of_road_blocks = num;
 	}
 
+	public bool HitCollider() {
+		if (this.hitCollider){
+			this.hitCollider = false;
+			return true;
+		}
+
+		return false;
+	}
+
 	/***************************************** Trigger Handler *****************************************/
 	void OnTriggerEnter(Collider other) {
 		if(other.tag.Equals("Player")) {
+			this.hitCollider = true;
 			Vector3 newPos = this.transform.position;
 			newPos.z += this.offset + this.distance;
 
