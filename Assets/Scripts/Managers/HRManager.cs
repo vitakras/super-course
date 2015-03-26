@@ -11,7 +11,7 @@ public class HRManager : MonoBehaviour {
 	public static int _heartRate;
 
 	//initiate serial port communication
-	SerialPort sp = new SerialPort("COM4", 115200);
+	SerialPort sp = new SerialPort("/dev/tty.usbmodem1411", 115200);
 
 	private int[] heartRateRecord;
 	private bool isFirst;

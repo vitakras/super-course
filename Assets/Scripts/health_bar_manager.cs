@@ -15,14 +15,23 @@ public class health_bar_manager : MonoBehaviour {
 	public Text healthText;
 	public Image visualHR;
 
-	public int target_heartR;
+	public float target_heartR_min;
+	public float target_heartR_max;
+	public RectTransform targetZoneTransform;
 
+	private float target_heartR_max_current = 100;
+	private float target_heartR_min_current = 80;
+	public float scaler;
+	private float temp_scaler;
 	// Use this for initialization
 	void Start () {
 		cachedY = healthTransform.position.y;
 		maxXValue = healthTransform.position.x;
 		minXValue = healthTransform.position.x - healthTransform.rect.width;
 		currentHealth = maxHealth;
+		target_heartR_max_current = 100;
+		target_heartR_min_current = 80;
+		temp_scaler = scaler;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +39,18 @@ public class health_bar_manager : MonoBehaviour {
 
 		currentHealth = HRManager.AverageHeartRate;
 		HandleHealth ();
+
+		//change the size of target zone according to new min and max
+		if (target_heartR_max!=0 && target_heartR_min!=0 &&(target_heartR_max - target_heartR_min) != (target_heartR_max_current - target_heartR_min_current)) 
+		{
+			scaler = (target_heartR_max - target_heartR_min)/(target_heartR_max_current - target_heartR_min_current);
+			if(scaler>0)
+			{
+				HandleTargetZoneScale(scaler);
+			}
+			target_heartR_max_current = target_heartR_max ;
+			target_heartR_min_current = target_heartR_min;
+		}
 	
 	}
 
@@ -50,8 +71,17 @@ public class health_bar_manager : MonoBehaviour {
 			visualHR.color = new Color32(255, (byte)MapValues(currentHealth,0,maxHealth/2,0,255),0,255);
 		}
 	}
+
 	private float MapValues(float x, float inMin, float inMax, float outMin, float outMax)
 	{
 		return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+	}
+
+	//change target zone size
+	private void HandleTargetZoneScale(float scaler)
+	{
+
+		targetZoneTransform.sizeDelta = new Vector2 (targetZoneTransform.sizeDelta.x * scaler, targetZoneTransform.sizeDelta.y);
+		//print ("scale function called");
 	}
 }
