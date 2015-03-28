@@ -54,6 +54,11 @@ public class IntervalTraining : MonoBehaviour {
 		this.current = this.interval_queue.Dequeue();
 
 //		Debug.Log(new Time(total_time));
+		if(text != null) {
+			float minutes = total_time / 60;
+			float seconds = total_time % 60;
+			text.text = string.Format ("{0:00}:{1:00}", minutes, seconds); 
+		}
 	}
 	
 	// Update is called once per frame
@@ -76,6 +81,10 @@ public class IntervalTraining : MonoBehaviour {
 
 		if (this.roadBlock.HitCollider()) {
 			// Increases or decreases dificulty based on the heartrate
+			if (HRManager.AverageHeartRate == 0) {
+				return;
+			}
+
 			if (HRManager.AverageHeartRate < this.current.min_heart_rate) {
 				this.AddDifficulty();
 				this.UpdateRoadBlockCreator();
@@ -88,7 +97,10 @@ public class IntervalTraining : MonoBehaviour {
 
 		// Displays text only if it exists
 		if(text != null) {
-			//text.text = new Time(total_time);
+			//Debug.Log(total_time);
+			float minutes = (int)(total_time / 60);
+			float seconds = total_time % 60;
+			text.text = string.Format ("{0:00}:{1:00}", minutes, seconds); 
 		}
 	}
 
