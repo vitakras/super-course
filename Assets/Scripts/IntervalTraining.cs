@@ -12,13 +12,13 @@ public class Interval {
 }
 
 public class IntervalTraining : MonoBehaviour {
-	
+
 	public Interval[] intervals;
 	public Text text;
 	public bool end_game_on_empty = false;
 
 	private Queue<Interval> interval_queue;
-	private Interval current;
+	public static Interval current;
 	private float total_time; //total time;
 	private RoadBlockCreator roadBlock;
 
@@ -51,7 +51,7 @@ public class IntervalTraining : MonoBehaviour {
 			this.interval_queue.Enqueue(this.intervals[i]);
 		}
 
-		this.current = this.interval_queue.Dequeue();
+		IntervalTraining.current = this.interval_queue.Dequeue();
 
 //		Debug.Log(new Time(total_time));
 		if(text != null) {
@@ -68,14 +68,14 @@ public class IntervalTraining : MonoBehaviour {
 		}
 
 		this.total_time -= Time.deltaTime;
-		this.current.time -= Time.deltaTime;
+		IntervalTraining.current.time -= Time.deltaTime;
 
 		// Checks if Game ended or to Remove item from the Queue
-		if(this.current.time == 0) {
+		if(IntervalTraining.current.time == 0) {
 			if((this.interval_queue.Count == 0) && this.end_game_on_empty) {
 				Application.LoadLevel("MainMenu");
 			} else {
-				this.current = this.interval_queue.Dequeue();
+				IntervalTraining.current = this.interval_queue.Dequeue();
 			}
 		}
 
@@ -85,10 +85,10 @@ public class IntervalTraining : MonoBehaviour {
 				return;
 			}
 
-			if (HRManager.AverageHeartRate < this.current.min_heart_rate) {
+			if (HRManager.AverageHeartRate < IntervalTraining.current.min_heart_rate) {
 				this.AddDifficulty();
 				this.UpdateRoadBlockCreator();
-			} else if (HRManager.AverageHeartRate > this.current.max_heart_rate) {
+			} else if (HRManager.AverageHeartRate > IntervalTraining.current.max_heart_rate) {
 				this.SubtractDifficulty();
 				this.UpdateRoadBlockCreator();
 			}
