@@ -18,11 +18,15 @@ public class health_bar_manager : MonoBehaviour {
 	public float target_heartR_min;
 	public float target_heartR_max;
 	public RectTransform targetZoneTransform;
+	private float cachedYTZ;
+	private float minXValueTZ;
+	private float maxXValueTZ;
+	private float currentTZMin;
 
 	private float target_heartR_max_current = 100;
 	private float target_heartR_min_current = 80;
 	public float scaler;
-	private float temp_scaler;
+	//private float temp_scaler;
 	// Use this for initialization
 	void Start () {
 		cachedY = healthTransform.position.y;
@@ -31,7 +35,12 @@ public class health_bar_manager : MonoBehaviour {
 		currentHealth = maxHealth;
 		target_heartR_max_current = 100;
 		target_heartR_min_current = 80;
-		temp_scaler = scaler;
+		//temp_scaler = scaler;
+
+		cachedYTZ = targetZoneTransform.position.y;
+		maxXValueTZ = maxXValue + healthTransform.rect.width - targetZoneTransform.rect.width;
+		minXValueTZ = maxXValue; 
+		currentTZMin = target_heartR_min_current;
 	}
 	
 	// Update is called once per frame
@@ -48,10 +57,19 @@ public class health_bar_manager : MonoBehaviour {
 			{
 				HandleTargetZoneScale(scaler);
 			}
-			target_heartR_max_current = target_heartR_max ;
-			target_heartR_min_current = target_heartR_min;
+//			target_heartR_max_current = target_heartR_max ;
+//			target_heartR_min_current = target_heartR_min;
+			maxXValueTZ = maxXValue + healthTransform.rect.width - targetZoneTransform.rect.width*2;
 		}
-	
+		if (target_heartR_max != 0 && target_heartR_min != 0) 
+		{
+			float currentXValueTZ = MapValues(currentTZMin, 0, maxHealth, minXValueTZ, maxXValueTZ);
+			targetZoneTransform.position = new Vector3(currentXValueTZ,cachedYTZ);
+			print("tz position");
+			print(targetZoneTransform.position.ToString());
+		}
+		target_heartR_max_current = target_heartR_max ;
+		target_heartR_min_current = target_heartR_min;
 	}
 
 	private void HandleHealth()
