@@ -23,21 +23,21 @@ public class IntervalTraining : MonoBehaviour {
 	private RoadBlockCreator roadBlock;
 
 	//Interval variables;
-	private float distance = 5;
+	//private float distance = 5;
 	private uint num_of_jumps = 1;
-	private bool added_jump;
+	//private bool added_jump;
 
 	// Constants
 
-	private const float min_distance = 10;
-	private const float increase_distance_by = 5;
-	private const float max_distance = 30;
+	//private const float min_distance = 10;
+	//private const float increase_distance_by = 5;
+	//private const float max_distance = 30;
 	private const uint max_jumps = 20;
 	private const uint min_jumps = 0;
 
 	// Use this for initialization
 	void Start () {
-		this.added_jump = false;
+		//this.added_jump = false;
 		this.total_time = 0;
 		this.interval_queue = new Queue<Interval>();
 		this.roadBlock = RoadBlockCreator.Instance;
@@ -58,6 +58,10 @@ public class IntervalTraining : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (GameStateManager.Instance.GameState() != GameStateManager.State.PLAYING) {
+			return;
+		}
+
 		this.total_time -= Time.deltaTime;
 		this.current.time -= Time.deltaTime;
 
@@ -89,6 +93,7 @@ public class IntervalTraining : MonoBehaviour {
 	}
 
 	private void AddDifficulty() {
+		/*
 		if (added_jump) {
 			this.distance -= IntervalTraining.increase_distance_by;
 
@@ -98,7 +103,7 @@ public class IntervalTraining : MonoBehaviour {
 			}
 
 			this.added_jump = false;
-		} else { 
+		} else { */
 			this.num_of_jumps++;
 
 			// Prevent from going voer max jumps
@@ -106,12 +111,12 @@ public class IntervalTraining : MonoBehaviour {
 				this.num_of_jumps = IntervalTraining.max_jumps;
 			}
 
-			this.added_jump = true;
-		}
+			//this.added_jump = true;
+		//}
 	}
 
 	private void SubtractDifficulty() {
-		if (added_jump) {
+		//if (added_jump) {
 			this.num_of_jumps--;
 			
 			// Prevent from going voer max jumps
@@ -119,8 +124,8 @@ public class IntervalTraining : MonoBehaviour {
 				this.num_of_jumps = IntervalTraining.min_jumps;
 			}
 			
-			this.added_jump = false;
-		} else { 
+			//this.added_jump = false;
+	/*	} else { 
 			this.distance += IntervalTraining.increase_distance_by;
 			
 			// Prevent from going over max distance
@@ -129,11 +134,11 @@ public class IntervalTraining : MonoBehaviour {
 			}
 			
 			this.added_jump = true;
-		}
+		}*/
 	}
 
 	private void UpdateRoadBlockCreator() {
-		this.roadBlock.distance = this.distance;
+		//this.roadBlock.distance = this.distance;
 		this.roadBlock.num_of_road_blocks = this.num_of_jumps;
 	}
 }

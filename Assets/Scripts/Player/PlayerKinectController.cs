@@ -126,6 +126,7 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 		// detect these user specific gestures
 		//this.manager.DetectGesture (userId, KinectGestures.Gestures.Jump);
 		this.manager.DetectGesture (userId, KinectGestures.Gestures.Walk);
+		this.manager.DetectGesture (userId, KinectGestures.Gestures.Wave);
 		
 		if (this.DebugInfo) {
 			this.DebugInfo.text = "User Visible";
@@ -171,6 +172,10 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 			this.motor.Jump();
 		} 
 
+		if(gesture == KinectGestures.Gestures.Stop) {
+			Debug.Log("Stop started");
+		}
+
 		// Sets the progress of the current gesture
 		this.gesture_progress = progress;
 	}
@@ -194,6 +199,11 @@ public class PlayerKinectController : MonoBehaviour, KinectGestures.GestureListe
 			break;
 		case KinectGestures.Gestures.Walk:
 			this.num_steps++;
+			break;
+		case KinectGestures.Gestures.Wave:
+			if(GameStateManager.Instance.GameState() == GameStateManager.State.PLAYING) {
+				PauseMenuHandler.Instance.Pause();
+			}
 			break;
 		}
 		

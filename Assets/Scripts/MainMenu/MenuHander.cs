@@ -16,4 +16,8 @@ public class MenuHander : MonoBehaviour {
 	public void LoadDemo () {
 		Application.LoadLevel("GameDemo");
 	}
+
+	public void ExitGame() {
+		Application.Quit();
+	}
 }

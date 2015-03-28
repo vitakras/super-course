@@ -26,10 +26,10 @@ public class RoadBlock : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		if(collision.gameObject.tag.Equals("Player")) {
 			//Checks if a clip is attached;
-			/*
+
 			if (this.sound.clip) {
 				this.sound.Play();
-			}*/
+			}
 
 			this.player = collision.gameObject;
 			this.player.GetComponent<PlayerKinectController>().StopPlayer();
