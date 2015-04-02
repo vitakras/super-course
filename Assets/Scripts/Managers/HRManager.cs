@@ -7,11 +7,12 @@ public class HRManager : MonoBehaviour {
 	//It reads HR from the board, calculate average HR from 10 reads and save it to a global variable called AverageHeartRate
 
 	//global variables
+	//public string port;
 	public static int AverageHeartRate;
 	public static int _heartRate;
 
 	//initiate serial port communication
-	SerialPort sp = new SerialPort("/dev/tty.usbmodem1411", 115200);
+	SerialPort sp = new SerialPort("COM4", 9600);
 
 	private int[] heartRateRecord;
 	private bool isFirst;
