@@ -45,7 +45,8 @@ public class health_bar_manager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		target_heartR_max = IntervalTraining.current.max_heart_rate;
+		target_heartR_min = IntervalTraining.current.min_heart_rate;
 		currentHealth = HRManager.AverageHeartRate;
 		HandleHealth ();
 
@@ -53,6 +54,13 @@ public class health_bar_manager : MonoBehaviour {
 		if (target_heartR_max!=0 && target_heartR_min!=0 &&(target_heartR_max - target_heartR_min) != (target_heartR_max_current - target_heartR_min_current)) 
 		{
 			scaler = (target_heartR_max - target_heartR_min)/(target_heartR_max_current - target_heartR_min_current);
+			if(scaler >1)
+			{
+				scaler = (scaler - 1)/2 + 1;
+			}else
+			{
+				scaler = 1- (1-scaler)/2;
+			}
 			if(scaler>0)
 			{
 				HandleTargetZoneScale(scaler);
@@ -61,7 +69,7 @@ public class health_bar_manager : MonoBehaviour {
 //			target_heartR_min_current = target_heartR_min;
 			maxXValueTZ = maxXValue + healthTransform.rect.width - targetZoneTransform.rect.width*2;
 		}
-		if (target_heartR_max != 0 && target_heartR_min != 0) 
+		if (target_heartR_max != 0 && target_heartR_min != 0 && target_heartR_min != target_heartR_min_current) 
 		{
 			float currentXValueTZ = MapValues(currentTZMin, 0, maxHealth, minXValueTZ, maxXValueTZ);
 			targetZoneTransform.position = new Vector3(currentXValueTZ,cachedYTZ);
